@@ -1,0 +1,624 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Хост: 127.0.0.1
+-- Время создания: Авг 24 2023 г., 18:52
+-- Версия сервера: 10.4.28-MariaDB
+-- Версия PHP: 8.2.4
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- База данных: `exile`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `account`
+--
+
+CREATE TABLE `account` (
+  `uid` varchar(32) NOT NULL,
+  `clan_id` int(11) UNSIGNED DEFAULT NULL,
+  `name` varchar(64) NOT NULL,
+  `score` int(50) NOT NULL DEFAULT 0,
+  `kills` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `deaths` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `locker` int(50) NOT NULL DEFAULT 0,
+  `vg_slots` int(11) NOT NULL DEFAULT 1,
+  `first_connect_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `last_connect_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `last_disconnect_at` datetime DEFAULT NULL,
+  `total_connections` int(11) UNSIGNED NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `account`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `atlas_virtualgarage`
+--
+
+CREATE TABLE `atlas_virtualgarage` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `nickname` varchar(20) NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `puid` varchar(32) NOT NULL,
+  `owner_uid` varchar(32) NOT NULL,
+  `textures` text NOT NULL,
+  `poptabs` text NOT NULL,
+  `pincode` varchar(6) NOT NULL DEFAULT '[]',
+  `damage` text NOT NULL,
+  `hitpoints` varchar(2048) NOT NULL DEFAULT '[]',
+  `fuel` double NOT NULL,
+  `items` text NOT NULL,
+  `magazines` text NOT NULL,
+  `weapons` text NOT NULL,
+  `cargo` text NOT NULL,
+  `ammo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `atlas_virtualgarage`
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `clan`
+--
+
+CREATE TABLE `clan` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `leader_uid` varchar(32) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `clan`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `clan_map_marker`
+--
+
+CREATE TABLE `clan_map_marker` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `clan_id` int(11) UNSIGNED NOT NULL,
+  `markerType` tinyint(4) NOT NULL DEFAULT -1,
+  `positionArr` text NOT NULL,
+  `color` varchar(255) NOT NULL,
+  `icon` varchar(255) NOT NULL,
+  `iconSize` float UNSIGNED NOT NULL,
+  `label` varchar(255) NOT NULL,
+  `labelSize` float UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `construction`
+--
+
+CREATE TABLE `construction` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `account_uid` varchar(32) NOT NULL,
+  `spawned_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `position_x` double NOT NULL DEFAULT 0,
+  `position_y` double NOT NULL DEFAULT 0,
+  `position_z` double NOT NULL DEFAULT 0,
+  `direction_x` double NOT NULL DEFAULT 0,
+  `direction_y` double NOT NULL DEFAULT 0,
+  `direction_z` double NOT NULL DEFAULT 0,
+  `up_x` double NOT NULL DEFAULT 0,
+  `up_y` double NOT NULL DEFAULT 0,
+  `up_z` double NOT NULL DEFAULT 0,
+  `is_locked` tinyint(1) NOT NULL DEFAULT 0,
+  `pin_code` varchar(6) NOT NULL DEFAULT '000000',
+  `damage` tinyint(1) UNSIGNED DEFAULT 0,
+  `territory_id` int(11) UNSIGNED DEFAULT NULL,
+  `last_updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `construction`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `container`
+--
+
+CREATE TABLE `container` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `spawned_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `account_uid` varchar(32) DEFAULT NULL,
+  `is_locked` tinyint(1) NOT NULL DEFAULT 0,
+  `position_x` double NOT NULL DEFAULT 0,
+  `position_y` double NOT NULL DEFAULT 0,
+  `position_z` double NOT NULL DEFAULT 0,
+  `direction_x` double NOT NULL DEFAULT 0,
+  `direction_y` double NOT NULL DEFAULT 0,
+  `direction_z` double NOT NULL DEFAULT 0,
+  `up_x` double NOT NULL DEFAULT 0,
+  `up_y` double NOT NULL DEFAULT 0,
+  `up_z` double NOT NULL DEFAULT 1,
+  `cargo_items` text NOT NULL,
+  `cargo_magazines` text NOT NULL,
+  `cargo_weapons` text NOT NULL,
+  `cargo_container` text NOT NULL,
+  `last_updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `pin_code` varchar(6) NOT NULL DEFAULT '000000',
+  `territory_id` int(11) UNSIGNED DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `money` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `abandoned` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci ROW_FORMAT=COMPACT;
+
+--
+-- Дамп данных таблицы `container`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `marxet`
+--
+
+CREATE TABLE `marxet` (
+  `listingID` varchar(8) NOT NULL,
+  `itemAvailable` tinyint(1) NOT NULL DEFAULT 1,
+  `itemArray` text NOT NULL,
+  `price` double NOT NULL,
+  `sellerUID` varchar(64) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `marxet`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `player`
+--
+
+CREATE TABLE `player` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `account_uid` varchar(32) NOT NULL,
+  `money` int(50) UNSIGNED NOT NULL DEFAULT 0,
+  `damage` double UNSIGNED NOT NULL DEFAULT 0,
+  `hunger` double UNSIGNED NOT NULL DEFAULT 100,
+  `thirst` double UNSIGNED NOT NULL DEFAULT 100,
+  `alcohol` double UNSIGNED NOT NULL DEFAULT 0,
+  `temperature` double NOT NULL DEFAULT 37,
+  `wetness` double UNSIGNED NOT NULL DEFAULT 0,
+  `oxygen_remaining` double UNSIGNED NOT NULL DEFAULT 1,
+  `bleeding_remaining` double UNSIGNED NOT NULL DEFAULT 0,
+  `hitpoints` varchar(1024) NOT NULL DEFAULT '[]',
+  `direction` double NOT NULL DEFAULT 0,
+  `position_x` double NOT NULL DEFAULT 0,
+  `position_y` double NOT NULL DEFAULT 0,
+  `position_z` double NOT NULL DEFAULT 0,
+  `spawned_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `assigned_items` text NOT NULL,
+  `backpack` varchar(64) NOT NULL,
+  `backpack_items` text NOT NULL,
+  `backpack_magazines` text NOT NULL,
+  `backpack_weapons` text NOT NULL,
+  `current_weapon` varchar(64) NOT NULL,
+  `goggles` varchar(64) NOT NULL,
+  `handgun_items` text NOT NULL,
+  `handgun_weapon` varchar(64) NOT NULL,
+  `headgear` varchar(64) NOT NULL,
+  `binocular` varchar(64) NOT NULL,
+  `loaded_magazines` text NOT NULL,
+  `primary_weapon` varchar(64) NOT NULL,
+  `primary_weapon_items` text NOT NULL,
+  `secondary_weapon` varchar(64) NOT NULL,
+  `secondary_weapon_items` text NOT NULL,
+  `uniform` varchar(64) NOT NULL,
+  `uniform_items` text NOT NULL,
+  `uniform_magazines` text NOT NULL,
+  `uniform_weapons` text NOT NULL,
+  `vest` varchar(64) NOT NULL,
+  `vest_items` text NOT NULL,
+  `vest_magazines` text NOT NULL,
+  `vest_weapons` text NOT NULL,
+  `last_updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `player`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `player_history`
+--
+
+CREATE TABLE `player_history` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `account_uid` varchar(32) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `died_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `position_x` double NOT NULL,
+  `position_y` double NOT NULL,
+  `position_z` double NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+
+--
+-- Структура таблицы `safex`
+--
+
+CREATE TABLE `safex` (
+  `uid` varchar(32) NOT NULL,
+  `safex_player` mediumtext NOT NULL DEFAULT '[]',
+  `marxet_player` mediumtext NOT NULL DEFAULT '[]'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `territory`
+--
+
+CREATE TABLE `territory` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `owner_uid` varchar(32) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `position_x` double NOT NULL,
+  `position_y` double NOT NULL,
+  `position_z` double NOT NULL,
+  `radius` double NOT NULL,
+  `level` int(11) NOT NULL,
+  `flag_texture` varchar(255) NOT NULL,
+  `flag_stolen` tinyint(1) NOT NULL DEFAULT 0,
+  `flag_stolen_by_uid` varchar(32) DEFAULT NULL,
+  `flag_stolen_at` datetime DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `last_paid_at` datetime DEFAULT current_timestamp(),
+  `xm8_protectionmoney_notified` tinyint(1) NOT NULL DEFAULT 0,
+  `build_rights` varchar(640) NOT NULL DEFAULT '0',
+  `moderators` varchar(320) NOT NULL DEFAULT '0',
+  `deleted_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `vehicle`
+--
+
+CREATE TABLE `vehicle` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `spawned_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `account_uid` varchar(32) DEFAULT NULL,
+  `is_locked` tinyint(1) NOT NULL DEFAULT 0,
+  `fuel` double UNSIGNED NOT NULL DEFAULT 0,
+  `damage` double UNSIGNED NOT NULL DEFAULT 0,
+  `hitpoints` text DEFAULT NULL,
+  `position_x` double NOT NULL DEFAULT 0,
+  `position_y` double NOT NULL DEFAULT 0,
+  `position_z` double NOT NULL DEFAULT 0,
+  `direction_x` double NOT NULL DEFAULT 0,
+  `direction_y` double NOT NULL DEFAULT 0,
+  `direction_z` double NOT NULL DEFAULT 0,
+  `up_x` double NOT NULL DEFAULT 0,
+  `up_y` double NOT NULL DEFAULT 0,
+  `up_z` double NOT NULL DEFAULT 1,
+  `cargo_items` text DEFAULT NULL,
+  `cargo_magazines` text DEFAULT NULL,
+  `cargo_weapons` text DEFAULT NULL,
+  `cargo_container` text DEFAULT NULL,
+  `last_updated_at` datetime NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `pin_code` varchar(6) NOT NULL DEFAULT '000000',
+  `deleted_at` datetime DEFAULT NULL,
+  `money` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `vehicle_texture` text DEFAULT NULL,
+  `territory_id` int(11) UNSIGNED DEFAULT NULL,
+  `nickname` varchar(64) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Дамп данных таблицы `vehicle`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `virtualgarage`
+--
+
+CREATE TABLE `virtualgarage` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `puid` varchar(32) NOT NULL,
+  `owner_uid` varchar(32) NOT NULL,
+  `textures` text NOT NULL,
+  `poptabs` text NOT NULL,
+  `pincode` varchar(6) NOT NULL DEFAULT '[]',
+  `damage` text NOT NULL,
+  `hitpoints` varchar(1024) NOT NULL DEFAULT '[]',
+  `fuel` double NOT NULL,
+  `items` text NOT NULL,
+  `magazines` text NOT NULL,
+  `weapons` text NOT NULL,
+  `cargo` text NOT NULL,
+  `ammo` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `virtual_garage`
+--
+
+CREATE TABLE `virtual_garage` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `class` varchar(64) NOT NULL,
+  `account_uid` varchar(32) DEFAULT NULL,
+  `fuel` double UNSIGNED NOT NULL DEFAULT 0,
+  `damage` double UNSIGNED NOT NULL DEFAULT 0,
+  `hitpoints` text NOT NULL,
+  `pin_code` varchar(6) NOT NULL DEFAULT '000000',
+  `vehicle_texture` text NOT NULL,
+  `money` int(11) UNSIGNED DEFAULT 0,
+  `cargo_items` text NOT NULL,
+  `cargo_weapons` text NOT NULL,
+  `cargo_magazines` text DEFAULT NULL,
+  `cargo_containers` text DEFAULT NULL,
+  `position` text DEFAULT NULL,
+  `vector` text DEFAULT NULL,
+  `nickname` varchar(64) DEFAULT '',
+  `wep_loadout` text DEFAULT NULL,
+  `stored_at` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `account`
+--
+ALTER TABLE `account`
+  ADD PRIMARY KEY (`uid`),
+  ADD KEY `clan_id` (`clan_id`);
+
+--
+-- Индексы таблицы `atlas_virtualgarage`
+--
+ALTER TABLE `atlas_virtualgarage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `clan`
+--
+ALTER TABLE `clan`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `leader_uid` (`leader_uid`);
+
+--
+-- Индексы таблицы `clan_map_marker`
+--
+ALTER TABLE `clan_map_marker`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `clan_id` (`clan_id`);
+
+--
+-- Индексы таблицы `construction`
+--
+ALTER TABLE `construction`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_uid` (`account_uid`);
+
+--
+-- Индексы таблицы `container`
+--
+ALTER TABLE `container`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_uid` (`account_uid`);
+
+--
+-- Индексы таблицы `marxet`
+--
+ALTER TABLE `marxet`
+  ADD PRIMARY KEY (`listingID`),
+  ADD KEY `listingID` (`listingID`);
+
+--
+-- Индексы таблицы `player`
+--
+ALTER TABLE `player`
+  ADD PRIMARY KEY (`id`,`account_uid`),
+  ADD KEY `player_uid` (`account_uid`);
+
+--
+-- Индексы таблицы `player_history`
+--
+ALTER TABLE `player_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `safex`
+--
+ALTER TABLE `safex`
+  ADD PRIMARY KEY (`uid`);
+
+--
+-- Индексы таблицы `territory`
+--
+ALTER TABLE `territory`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `owner_uid` (`owner_uid`);
+
+--
+-- Индексы таблицы `vehicle`
+--
+ALTER TABLE `vehicle`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `account_uid` (`account_uid`);
+
+--
+-- Индексы таблицы `virtualgarage`
+--
+ALTER TABLE `virtualgarage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `virtual_garage`
+--
+ALTER TABLE `virtual_garage`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `atlas_virtualgarage`
+--
+ALTER TABLE `atlas_virtualgarage`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT для таблицы `clan`
+--
+ALTER TABLE `clan`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT для таблицы `clan_map_marker`
+--
+ALTER TABLE `clan_map_marker`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `construction`
+--
+ALTER TABLE `construction`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT для таблицы `container`
+--
+ALTER TABLE `container`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT для таблицы `player`
+--
+ALTER TABLE `player`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1759;
+
+--
+-- AUTO_INCREMENT для таблицы `player_history`
+--
+ALTER TABLE `player_history`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1681;
+
+--
+-- AUTO_INCREMENT для таблицы `territory`
+--
+ALTER TABLE `territory`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT для таблицы `vehicle`
+--
+ALTER TABLE `vehicle`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=292;
+
+--
+-- AUTO_INCREMENT для таблицы `virtualgarage`
+--
+ALTER TABLE `virtualgarage`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT для таблицы `virtual_garage`
+--
+ALTER TABLE `virtual_garage`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5059;
+
+--
+-- Ограничения внешнего ключа сохраненных таблиц
+--
+
+--
+-- Ограничения внешнего ключа таблицы `account`
+--
+ALTER TABLE `account`
+  ADD CONSTRAINT `account_ibfk_1` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`) ON DELETE SET NULL;
+
+--
+-- Ограничения внешнего ключа таблицы `clan`
+--
+ALTER TABLE `clan`
+  ADD CONSTRAINT `clan_ibfk_1` FOREIGN KEY (`leader_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `clan_map_marker`
+--
+ALTER TABLE `clan_map_marker`
+  ADD CONSTRAINT `clan_map_marker_ibfk_1` FOREIGN KEY (`clan_id`) REFERENCES `clan` (`id`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `construction`
+--
+ALTER TABLE `construction`
+  ADD CONSTRAINT `construction_ibfk_1` FOREIGN KEY (`account_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `container`
+--
+ALTER TABLE `container`
+  ADD CONSTRAINT `container_ibfk_1` FOREIGN KEY (`account_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `player`
+--
+ALTER TABLE `player`
+  ADD CONSTRAINT `player_ibfk_1` FOREIGN KEY (`account_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `territory`
+--
+ALTER TABLE `territory`
+  ADD CONSTRAINT `territory_ibfk_1` FOREIGN KEY (`owner_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+
+--
+-- Ограничения внешнего ключа таблицы `vehicle`
+--
+ALTER TABLE `vehicle`
+  ADD CONSTRAINT `vehicle_ibfk_1` FOREIGN KEY (`account_uid`) REFERENCES `account` (`uid`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
